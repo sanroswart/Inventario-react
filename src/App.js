@@ -10,6 +10,7 @@ import Articles from "./pages/Articles";
 import InventoryTypes from "./pages/InventoryTypes";
 import Warehouses from "./pages/Warehouses";
 import Stock from "./pages/Stock";
+import Transactions from "./pages/Transactions";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/inventory-types" element={<InventoryTypes />} />
           <Route path="/warehouses" element={<Warehouses />} />
           <Route path="/stock" element={<Stock />} />
+          <Route path="/transactions" element={<Transactions />} />
           <Route path="*" element={<Navigate to="/articles" replace />} />
         </Routes>
       </Router>

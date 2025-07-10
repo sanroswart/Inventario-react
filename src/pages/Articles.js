@@ -1,17 +1,27 @@
 // src/pages/Articles.js
 import React, { useState, useEffect } from "react";
+import { generateCode } from "../utils/idGenerator";
 function Articles() {
   const empty = {
-    id: "",
+    id: generateCode("ART"), // código para Artículo
     description: "",
     stock: "",
-    typeId: "",
+    typeId: generateCode("TYP"), // código para Tipo Inventario
     cost: "",
     status: "",
   };
   const [items, setItems] = useState([]);
   const [form, setForm] = useState(empty);
   const [editIndex, setEditIndex] = useState(null);
+  // NUEVO: cargamos la lista de Tipos de Inventario guardados
+  const [types, setTypes] = useState([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("inventoryTypes");
+    if (saved) {
+      setTypes(JSON.parse(saved));
+    }
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem("articles");
@@ -28,6 +38,10 @@ function Articles() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (Number(form.stock) < 0 || Number(form.cost) < 0) {
+      alert("numero no valido.");
+      return;
+    }
     if (editIndex !== null) {
       const copy = [...items];
       copy[editIndex] = form;
@@ -79,13 +93,19 @@ function Articles() {
           onChange={handleChange}
           required
         />
-        <input
+        <select
           name="typeId"
-          placeholder="Tipo Inventario ID"
           value={form.typeId}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">— Elige un Tipo —</option>
+          {types.map((t, i) => (
+            <option key={i} value={t.id}>
+              {t.id} – {t.description}
+            </option>
+          ))}
+        </select>
         <input
           name="cost"
           placeholder="Costo Unitario"
@@ -93,13 +113,16 @@ function Articles() {
           onChange={handleChange}
           required
         />
-        <input
+        <select
           name="status"
-          placeholder="Estado"
           value={form.status}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">— Elige Estado —</option>
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
         <button type="submit" className="button-primary">
           {editIndex !== null ? "Guardar" : "Agregar"}
         </button>

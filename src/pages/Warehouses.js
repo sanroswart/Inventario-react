@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { generateCode } from "../utils/idGenerator";
 
 function Warehouses() {
-  const empty = { id: "", description: "", status: "" };
+  const empty = {
+    id: generateCode("WH"), // prefijo WH para almacén
+    description: "",
+    status: "",
+  };
 
   // Estados
   const [whs, setWhs] = useState([]);
@@ -70,13 +75,16 @@ function Warehouses() {
           onChange={handleChange}
           required
         />
-        <input
+        <select
           name="status"
-          placeholder="Estado"
           value={form.status}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">— Selecciona Estado —</option>
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
         <button type="submit" className="button-primary">
           {editIndex !== null ? "Guardar" : "Agregar"}
         </button>

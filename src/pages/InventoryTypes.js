@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { generateCode } from "../utils/idGenerator";
 
 function InventoryTypes() {
-  const empty = { id: "", description: "", account: "", status: "" };
+  const empty = {
+    id: generateCode("TYP"),
+    description: "",
+    account: "",
+    status: "",
+  };
 
   // Estados
   const [types, setTypes] = useState([]);
@@ -77,13 +83,16 @@ function InventoryTypes() {
           onChange={handleChange}
           required
         />
-        <input
+        <select
           name="status"
-          placeholder="Estado"
           value={form.status}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">— Elige Estado —</option>
+          <option value="Activo">Activo</option>
+          <option value="Inactivo">Inactivo</option>
+        </select>
         <button type="submit" className="button-primary">
           {editIndex !== null ? "Guardar" : "Agregar"}
         </button>

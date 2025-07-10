@@ -1,69 +1,62 @@
 import React, { useState, useEffect } from "react";
 import { generateCode } from "../utils/idGenerator";
 
-function Stock() {
+function Transactions() {
   const empty = {
-    id: generateCode("STK"), // opcional
-    warehouseId: "",
+    id: generateCode("TX"), // TX-XXXXXX
+    type: "",
     articleId: "",
+    date: "",
     quantity: "",
+    amount: "",
   };
-
-  // Estados
-  const [stocks, setStocks] = useState([]);
+  const [txs, setTxs] = useState([]);
   const [form, setForm] = useState(empty);
   const [editIndex, setEditIndex] = useState(null);
   const [articles, setArticles] = useState([]);
-  const [warehouses, setWarehouses] = useState([]);
 
   useEffect(() => {
     const savedArticles = localStorage.getItem("articles");
-    const savedWarehouses = localStorage.getItem("warehouses");
-    if (savedArticles) setArticles(JSON.parse(savedArticles));
-    if (savedWarehouses) setWarehouses(JSON.parse(savedWarehouses));
-  }, []);
-
-  // 1. Al montar, carga de localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("stocks");
-    if (saved) {
-      setStocks(JSON.parse(saved));
+    if (savedArticles) {
+      setArticles(JSON.parse(savedArticles));
     }
   }, []);
 
-  // 2. Cada vez que `stocks` cambie, guarda en localStorage
+  // 1) Carga desde localStorage al montar
   useEffect(() => {
-    localStorage.setItem("stocks", JSON.stringify(stocks));
-  }, [stocks]);
+    const saved = localStorage.getItem("transactions");
+    if (saved) setTxs(JSON.parse(saved));
+  }, []);
 
-  const handleChange = (e) => {
+  // 2) Guarda en localStorage cada vez que txs cambie
+  useEffect(() => {
+    localStorage.setItem("transactions", JSON.stringify(txs));
+  }, [txs]);
+
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (Number(form.quantity) < 0) {
+    if (Number(form.quantity) < 0 || Number(form.amount) < 0) {
       alert("numero no valido.");
       return;
     }
     if (editIndex !== null) {
-      const copy = [...stocks];
+      const copy = [...txs];
       copy[editIndex] = form;
-      setStocks(copy);
+      setTxs(copy);
       setEditIndex(null);
     } else {
-      setStocks([...stocks, form]);
+      setTxs([...txs, form]);
     }
     setForm(empty);
   };
-
   const handleEdit = (i) => {
-    setForm(stocks[i]);
+    setForm(txs[i]);
     setEditIndex(i);
   };
-
   const handleDelete = (i) => {
-    setStocks(stocks.filter((_, idx) => idx !== i));
+    setTxs(txs.filter((_, idx) => idx !== i));
     if (editIndex === i) {
       setEditIndex(null);
       setForm(empty);
@@ -72,30 +65,30 @@ function Stock() {
 
   return (
     <div>
-      <h2>Existencias por Almacén</h2>
+      <h2>Transacciones</h2>
 
       <form onSubmit={handleSubmit} className="form-grid">
-        <select
-          name="warehouseId"
-          value={form.warehouseId}
+        <input
+          name="id"
+          placeholder="ID Transacción"
+          value={form.id}
           onChange={handleChange}
           required
-        >
-          <option value="">Elige un almacén</option>
-          {warehouses.map((w, i) => (
-            <option key={i} value={w.id}>
-              {w.id} – {w.description}
-            </option>
-          ))}
+        />
+        <select name="type" value={form.type} onChange={handleChange} required>
+          <option value="">Tipo Transacción</option>
+          <option value="Entrada">Entrada</option>
+          <option value="Salida">Salida</option>
+          <option value="Traslado">Traslado</option>
+          <option value="Ajuste">Ajuste</option>
         </select>
-
         <select
           name="articleId"
           value={form.articleId}
           onChange={handleChange}
           required
         >
-          <option value="">Elige un artículo</option>
+          <option value="">— Selecciona Artículo —</option>
           {articles.map((a, i) => (
             <option key={i} value={a.id}>
               {a.id} – {a.description}
@@ -103,9 +96,23 @@ function Stock() {
           ))}
         </select>
         <input
+          type="date"
+          name="date"
+          value={form.date}
+          onChange={handleChange}
+          required
+        />
+        <input
           name="quantity"
           placeholder="Cantidad"
           value={form.quantity}
+          onChange={handleChange}
+          required
+        />
+        <input
+          name="amount"
+          placeholder="Monto"
+          value={form.amount}
           onChange={handleChange}
           required
         />
@@ -118,18 +125,24 @@ function Stock() {
         <table className="elegant-table">
           <thead>
             <tr>
-              <th>ID Almacén</th>
+              <th>ID</th>
+              <th>Tipo</th>
               <th>ID Artículo</th>
+              <th>Fecha</th>
               <th>Cantidad</th>
+              <th>Monto</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {stocks.map((s, i) => (
+            {txs.map((tx, i) => (
               <tr key={i}>
-                <td>{s.warehouseId}</td>
-                <td>{s.articleId}</td>
-                <td>{s.quantity}</td>
+                <td>{tx.id}</td>
+                <td>{tx.type}</td>
+                <td>{tx.articleId}</td>
+                <td>{tx.date}</td>
+                <td>{tx.quantity}</td>
+                <td>{tx.amount}</td>
                 <td>
                   <button
                     onClick={() => handleEdit(i)}
@@ -153,4 +166,4 @@ function Stock() {
   );
 }
 
-export default Stock;
+export default Transactions;

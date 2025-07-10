@@ -28,6 +28,12 @@ function Menu() {
       >
         Existencias
       </NavLink>
+      <NavLink
+        to="/transactions"
+        className={({ isActive }) => (isActive ? "active" : "")}
+      >
+        Transacciones
+      </NavLink>
     </nav>
   );
 }
