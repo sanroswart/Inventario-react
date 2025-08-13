@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { generateCode } from "../utils/idGenerator";
+import { exportToExcel, exportToPDF } from "../utils/exporters";
 
 function Warehouses() {
   const empty = {
@@ -59,7 +60,29 @@ function Warehouses() {
   return (
     <div>
       <h2>Almacenes</h2>
-
+      <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
+        <button
+          type="button"
+          className="button-primary"
+          onClick={() => exportToExcel(whs, "almacenes")}
+        >
+          Exportar Excel
+        </button>
+        <button
+          type="button"
+          className="button-primary"
+          onClick={() => {
+            const columns = [
+              { header: "ID", dataKey: "id" },
+              { header: "Descripción", dataKey: "description" },
+              { header: "Estado", dataKey: "status" },
+            ];
+            exportToPDF(columns, whs, "almacenes", "Almacenes");
+          }}
+        >
+          Exportar PDF
+        </button>
+      </div>
       <form onSubmit={handleSubmit} className="form-grid">
         <input
           name="id"

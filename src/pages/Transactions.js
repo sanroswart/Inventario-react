@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { generateCode } from "../utils/idGenerator";
+import { exportToExcel, exportToPDF } from "../utils/exporters";
 
 function Transactions() {
   const empty = {
@@ -66,6 +67,32 @@ function Transactions() {
   return (
     <div>
       <h2>Transacciones</h2>
+      <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
+        <button
+          type="button"
+          className="button-primary"
+          onClick={() => exportToExcel(txs, "transacciones")}
+        >
+          Exportar Excel
+        </button>
+        <button
+          type="button"
+          className="button-primary"
+          onClick={() => {
+            const columns = [
+              { header: "ID", dataKey: "id" },
+              { header: "Tipo", dataKey: "type" },
+              { header: "ID Artículo", dataKey: "articleId" },
+              { header: "Fecha", dataKey: "date" },
+              { header: "Cantidad", dataKey: "quantity" },
+              { header: "Monto", dataKey: "amount" },
+            ];
+            exportToPDF(columns, txs, "transacciones", "Transacciones");
+          }}
+        >
+          Exportar PDF
+        </button>
+      </div>
 
       <form onSubmit={handleSubmit} className="form-grid">
         <input

@@ -1,6 +1,7 @@
 // src/pages/Articles.js
 import React, { useState, useEffect } from "react";
 import { generateCode } from "../utils/idGenerator";
+import { exportToExcel, exportToPDF } from "../utils/exporters";
 function Articles() {
   const empty = {
     id: generateCode("ART"), // código para Artículo
@@ -69,7 +70,33 @@ function Articles() {
   return (
     <div>
       <h2>Artículos</h2>
+      <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
+        <button
+          type="button"
+          className="button-primary"
+          onClick={() => exportToExcel(items, "articulos")}
+        >
+          Exportar Excel
+        </button>
 
+        <button
+          type="button"
+          className="button-primary"
+          onClick={() => {
+            const columns = [
+              { header: "ID", dataKey: "id" },
+              { header: "Descripción", dataKey: "description" },
+              { header: "Existencia", dataKey: "stock" },
+              { header: "Tipo ID", dataKey: "typeId" },
+              { header: "Costo", dataKey: "cost" },
+              { header: "Estado", dataKey: "status" },
+            ];
+            exportToPDF(columns, items, "articulos", "Listado de Artículos");
+          }}
+        >
+          Exportar PDF
+        </button>
+      </div>
       {/* Formulario en grid */}
       <form onSubmit={handleSubmit} className="form-grid">
         <input
