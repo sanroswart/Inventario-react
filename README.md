@@ -1,7 +1,7 @@
 ## Requisitos
 
 - **Node.js** (recomendado ≥ v14)  
-- **npm** (incluido con Node.js)  
+- **npm** (incluido con Node.js)
 
 ## Instalación y ejecución
 
@@ -12,8 +12,9 @@
    
 	2.	Instalar dependencias
    npm install
+	npm install jspdf@^2.5.1 jspdf-autotable@^3.8.2 (dependencia para la exportacion en pdf y excel)
 
-   3.	Iniciar el servidor de desarrollo
+   4.	Iniciar el servidor de desarrollo
    npm start
    Abre luego: http://localhost:3000
 
