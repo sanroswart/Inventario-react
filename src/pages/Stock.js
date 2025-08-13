@@ -74,35 +74,35 @@ function Stock() {
   return (
     <div>
       <h2>Existencias por Almacén</h2>
-      <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
-        <button
-          type="button"
-          className="button-primary"
-          onClick={() => exportToExcel(stocks, "existencias")}
-        >
-          Exportar Excel
-        </button>
-        <button
-          type="button"
-          className="button-primary"
-          onClick={() => {
-            const columns = [
-              { header: "ID Almacén", dataKey: "warehouseId" },
-              { header: "ID Artículo", dataKey: "articleId" },
-              { header: "Cantidad", dataKey: "quantity" },
-            ];
-            exportToPDF(
-              columns,
-              stocks,
-              "existencias",
-              "Existencias por Almacén"
-            );
-          }}
-        >
-          Exportar PDF
-        </button>
-      </div>
       <form onSubmit={handleSubmit} className="form-grid">
+        <div style={{ display: "flex", gap: 8, margin: "12px 0" }}>
+          <button
+            type="button"
+            className="button-primary"
+            onClick={() => exportToExcel(stocks, "existencias")}
+          >
+            Exportar Excel
+          </button>
+          <button
+            type="button"
+            className="button-primary"
+            onClick={() => {
+              const columns = [
+                { header: "ID Almacén", dataKey: "warehouseId" },
+                { header: "ID Artículo", dataKey: "articleId" },
+                { header: "Cantidad", dataKey: "quantity" },
+              ];
+              exportToPDF(
+                columns,
+                stocks,
+                "existencias",
+                "Existencias por Almacén"
+              );
+            }}
+          >
+            Exportar PDF
+          </button>
+        </div>
         <select
           name="warehouseId"
           value={form.warehouseId}

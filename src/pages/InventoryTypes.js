@@ -62,37 +62,36 @@ function InventoryTypes() {
     <div>
       <h2>Tipos de Inventario</h2>
 
-      <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
-        <button
-          type="button"
-          className="button-primary"
-          onClick={() => exportToExcel(types, "tipos_inventario")}
-        >
-          Exportar Excel
-        </button>
-        <button
-          type="button"
-          className="button-primary"
-          onClick={() => {
-            const columns = [
-              { header: "ID", dataKey: "id" },
-              { header: "Descripción", dataKey: "description" },
-              { header: "Cuenta", dataKey: "account" },
-              { header: "Estado", dataKey: "status" },
-            ];
-            exportToPDF(
-              columns,
-              types,
-              "tipos_inventario",
-              "Tipos de Inventario"
-            );
-          }}
-        >
-          Exportar PDF
-        </button>
-      </div>
-
       <form onSubmit={handleSubmit} className="form-grid">
+        <div style={{ display: "flex", gap: 8, margin: "12px 0" }}>
+          <button
+            type="button"
+            className="button-primary"
+            onClick={() => exportToExcel(types, "tipos_inventario")}
+          >
+            Exportar Excel
+          </button>
+          <button
+            type="button"
+            className="button-primary"
+            onClick={() => {
+              const columns = [
+                { header: "ID", dataKey: "id" },
+                { header: "Descripción", dataKey: "description" },
+                { header: "Cuenta", dataKey: "account" },
+                { header: "Estado", dataKey: "status" },
+              ];
+              exportToPDF(
+                columns,
+                types,
+                "tipos_inventario",
+                "Tipos de Inventario"
+              );
+            }}
+          >
+            Exportar PDF
+          </button>
+        </div>
         <input
           name="id"
           placeholder="Identificador"
